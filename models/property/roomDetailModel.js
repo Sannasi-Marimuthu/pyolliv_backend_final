@@ -6,7 +6,6 @@ const RoomDetailSchema = new mongoose.Schema(
 
     room_display_name: {
       type: String,
-      required: [true, "Room display name is required"],
     },
 
     room_description: {
@@ -84,30 +83,36 @@ const RoomDetailSchema = new mongoose.Schema(
       default: 0,
     },
 
-    smoking_policy: {
+    smoking_policy: [
+      {
       type: mongoose.Schema.Types.ObjectId,
       ref: "SmokingPolicy",
-    },
+    }
+    ],
 
-    room_size: {
+    room_size: [
+      {
       type: mongoose.Schema.Types.ObjectId,
       ref: "RoomSizeUnit",
-    },
+    }
+    ],
 
-    room_view: {
+    room_view: [
+      {
       type: mongoose.Schema.Types.ObjectId,
       ref: "RoomView",
-    },
+    }
+    ],
 
-    bed_type: {
+    bed_type: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "BedType",
-    },
+    }],
 
-    room_type: {
+    room_type: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "RoomType",
-    },
+    }],
 
     room_amenities: [
       {
