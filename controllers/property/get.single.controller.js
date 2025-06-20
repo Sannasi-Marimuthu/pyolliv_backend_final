@@ -60,20 +60,34 @@ exports.getSinglePropertyDetail = catchAsyncError(async (req, res, next) => {
 
 // GET single room detail - /api/v1/property/room-detail/:id
 exports.getSingleRoomDetail = catchAsyncError(async (req, res, next) => {
-  const roomDetail = await RoomDetailModel.findById(req.params.id)
-    .populate("smoking_policy")
-    .populate("room_size")
-    .populate("room_view")
-    .populate("bed_type")
-    .populate("room_type")
-    .populate("room_amenities");
+   try {
+    const { id } = req.params;
 
-  if (!roomDetail) {
-    return next(new ErrorHandler("Room Detail not found", 404));
+    const room = await RoomDetailModel.findById(id)
+      .populate("smoking_policy")
+      .populate("room_size")
+      .populate("room_view")
+      .populate("bed_type")
+      .populate("room_type")
+      .populate("room_amenities");
+
+    if (!room) {
+      return res.status(404).json({
+        success: false,
+        message: "Room not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: room,
+    });
+  } catch (error) {
+    console.error("Error fetching single room:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch room detail",
+      error: error.message,
+    });
   }
-
-  res.status(200).json({
-    success: true,
-    roomDetail,
-  });
 });
